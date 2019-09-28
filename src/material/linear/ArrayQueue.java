@@ -24,16 +24,19 @@ public class ArrayQueue<E> implements Queue<E> {
     }
 
 
+    //Complexity: O(1)
     @Override
     public int size () {
         return this.size;
     }
 
+    //Complexity: O(1)
     @Override
     public boolean isEmpty () {
         return this.size == 0;
     }
 
+    //Complexity: O(1)
     @Override
     public E front () {
         if (this.isEmpty()) {
@@ -43,6 +46,7 @@ public class ArrayQueue<E> implements Queue<E> {
         return this.array[this.top];
     }
 
+    //Complexity: O(1) best case | O(n) worst case
     @Override
     public void enqueue (E element) {
         if (this.nextFree < this.length) {
@@ -65,6 +69,7 @@ public class ArrayQueue<E> implements Queue<E> {
         }
     }
 
+    //Complexity: O(1)
     @Override
     public E dequeue () {
         if (this.isEmpty()) {
