@@ -36,6 +36,7 @@ public class LinkedQueue<E> implements Queue<E> {
     @Override
     public int size() {
         return size;
+
     }
 
     @Override
