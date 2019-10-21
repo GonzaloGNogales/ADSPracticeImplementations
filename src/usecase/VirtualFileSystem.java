@@ -1,18 +1,22 @@
 package usecase;
+import material.Position;
+import material.tree.narytree.LinkedTree;
 
-
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Iterator;
 
 public class VirtualFileSystem {
-
     //TODO: Ejercicio 4 Caso de uso
+    private LinkedTree<String> tree = new LinkedTree<>();
 
-
-    public void loadFileSystem(String path) {
-        path = ("Resources/practica2/DirectorioRaiz/");
+    public void loadFileSystem (String path) {
+        Position<String> pRoot = tree.addRoot(path);
+        //Position<String> pSubA = tree.add();
     }
 
     public String getFileSystem() {
-        return ("Resources/practica2/DirectorioRaiz/");
+        return tree.root().getElement();
     }
 
     public void moveFileById(int idFile, int idTargetFolder) {

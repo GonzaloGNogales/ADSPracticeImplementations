@@ -31,59 +31,59 @@ public class LCRSTree<E> implements NAryTree<E> {
         }
 
         @Override
-        public E getElement() {
+        public E getElement () {
             return element;
         }
 
-        public void setElement(E e) {
+        public void setElement (E e) {
             this.element = e;
         }
 
-        public LCRSNode<E> getParent() {
+        public LCRSNode<E> getParent () {
             return parent;
         }
 
-        public void setParent(LCRSNode<E> p) {
+        public void setParent (LCRSNode<E> p) {
             this.parent = p;
         }
 
-        public LCRSNode<E> getLeftChild() {
+        public LCRSNode<E> getLeftChild () {
             return leftChild;
         }
 
-        public void setLeftChild(LCRSNode<E> leftChild) {
+        public void setLeftChild (LCRSNode<E> leftChild) {
             this.leftChild = leftChild;
         }
 
-        public LCRSNode<E> getRightSibling() {
+        public LCRSNode<E> getRightSibling () {
             return rightSibling;
         }
 
-        public void setRightSibling(LCRSNode<E> rightSibling) {
+        public void setRightSibling (LCRSNode<E> rightSibling) {
             this.rightSibling = rightSibling;
         }
 
-        public LCRSTree<E> getMyTree() {
+        public LCRSTree<E> getMyTree () {
             return myTree;
         }
 
-        public void setMyTree(LCRSTree<E> mT) {
+        public void setMyTree (LCRSTree<E> mT) {
             this.myTree = mT;
         }
     }
 
     @Override
-    public int size() {
+    public int size () {
         return this.size;
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty () {
         return (this.size == 0);
     }
 
     @Override
-    public Position<E> root() throws RuntimeException {
+    public Position<E> root () throws RuntimeException {
         if (this.root == null) {
             throw new RuntimeException("The tree is empty");
         }
@@ -91,7 +91,7 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Position<E> parent(Position<E> v) throws RuntimeException {
+    public Position<E> parent (Position<E> v) throws RuntimeException {
         LCRSNode<E> node = checkPosition(v);
         LCRSNode<E> parentNode = node.getParent();
         if (parentNode == null) {
@@ -101,7 +101,7 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Iterable<? extends Position<E>> children(Position<E> v) {
+    public Iterable<? extends Position<E>> children (Position<E> v) {
         LCRSNode<E> node = checkPosition(v);
         LCRSNode<E> nodeLeftChild = node.getLeftChild();
         List<LCRSNode<E>> childList = new LinkedList<>();
@@ -120,24 +120,24 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public boolean isInternal(Position<E> v) {
+    public boolean isInternal (Position<E> v) {
         return !isLeaf(v);
     }
 
     @Override
-    public boolean isLeaf(Position<E> v) throws RuntimeException {
+    public boolean isLeaf (Position<E> v) throws RuntimeException {
         LCRSNode<E> node = checkPosition(v);
         return (node.getLeftChild() == null);
     }
 
     @Override
-    public boolean isRoot(Position<E> v) {
+    public boolean isRoot (Position<E> v) {
         LCRSNode<E> node = checkPosition(v);
         return (node == this.root());
     }
 
     @Override
-    public Position<E> addRoot(E e) throws RuntimeException {
+    public Position<E> addRoot (E e) throws RuntimeException {
         if (!this.isEmpty()) {
             throw new IllegalStateException("Tree already has a root");
         }
@@ -148,12 +148,12 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Iterator<Position<E>> iterator() {
+    public Iterator<Position<E>> iterator () {
         return new BFSIterator<>(this);
     }
 
     @Override
-    public E replace(Position<E> p, E e) {
+    public E replace (Position<E> p, E e) {
         LCRSNode<E> node = checkPosition(p);
         E temp = node.getElement();
         node.setElement(e);
@@ -161,7 +161,7 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public void swapElements(Position<E> p1, Position<E> p2) {
+    public void swapElements (Position<E> p1, Position<E> p2) {
         LCRSNode<E> node1 = checkPosition(p1);
         LCRSNode<E> node2 = checkPosition(p2);
         E temp = node2.getElement();
@@ -170,7 +170,7 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Position<E> add(E element, Position<E> p) {
+    public Position<E> add (E element, Position<E> p) {
         LCRSNode<E> nodeParent = checkPosition(p);
         LCRSNode<E> newNode = new LCRSNode<>(element,nodeParent,null,null,this);
         if (nodeParent.getLeftChild() == null)
@@ -189,7 +189,7 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public void remove(Position<E> p) {
+    public void remove (Position<E> p) {
         LCRSNode<E> node = checkPosition(p);
         if (node.getParent() != null) {
             Iterator<Position<E>> it = new BFSIterator<>(this, p);
@@ -209,7 +209,7 @@ public class LCRSTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public void moveSubtree(Position<E> pOrig, Position<E> pDest) throws RuntimeException {
+    public void moveSubtree (Position<E> pOrig, Position<E> pDest) throws RuntimeException {
         LCRSNode<E> origin = checkPosition(pOrig);
         LCRSNode<E> dest = checkPosition(pDest);
         LCRSNode<E> aux = dest;

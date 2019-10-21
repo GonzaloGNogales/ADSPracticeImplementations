@@ -1,38 +1,85 @@
 package material.linear;
 
 public class ArrayQueue<E> implements Queue<E> {
+    int top;
+    E[] array;
+    int size;
+    int length;
+    int nextFree;
 
-    public ArrayQueue() {
-        throw new RuntimeException("Not yet implemented");
+    public ArrayQueue () {
+        this.top = 0;
+        this.array = (E[]) new Object[16];
+        this.size = 0;
+        this.nextFree = 0;
+        this.length = 16;
     }
 
-    public ArrayQueue(int capacity) {
-        throw new RuntimeException("Not yet implemented");
+    public ArrayQueue (int capacity) {
+        this.top = 0;
+        this.array = (E[]) new Object[capacity];
+        this.size = 0;
+        this.nextFree = 0;
+        this.length = capacity;
     }
 
 
+    //Complexity: O(1)
     @Override
-    public int size() {
-        throw new RuntimeException("Not yet implemented");
+    public int size () {
+        return this.size;
     }
 
+    //Complexity: O(1)
     @Override
-    public boolean isEmpty() {
-        throw new RuntimeException("Not yet implemented");
+    public boolean isEmpty () {
+        return this.size == 0;
     }
 
+    //Complexity: O(1)
     @Override
-    public E front() {
-        throw new RuntimeException("Not yet implemented");
+    public E front () {
+        if (this.isEmpty()) {
+            throw new RuntimeException("Queue is empty");
+        }
+
+        return this.array[this.top];
     }
 
+    //Complexity: O(1) best case | O(n) worst case
     @Override
-    public void enqueue(E element) {
-        throw new RuntimeException("Not yet implemented");
+    public void enqueue (E element) {
+        if (this.nextFree < this.length) {
+            this.array[this.nextFree] = element;
+            this.size++;
+            this.nextFree++;
+        }
+        else if (this.nextFree == this.length) {
+            this.length *= 2;
+            E[] arrayResized = (E[]) new Object[this.length];
+
+            for (int i = 0; i < this.nextFree; i++) {
+                arrayResized[i] = this.array[i];
+            }
+
+            this.array = arrayResized;
+            this.array[this.nextFree] = element;
+            this.size++;
+            this.nextFree++;
+        }
     }
 
+    //Complexity: O(1)
     @Override
-    public E dequeue() {
-        throw new RuntimeException("Not yet implemented");
+    public E dequeue () {
+        if (this.isEmpty()) {
+            throw new RuntimeException("Queue is empty");
+        }
+
+        E value = this.array[this.top];
+        this.top++;
+        this.size--;
+
+        return value;
     }
 }

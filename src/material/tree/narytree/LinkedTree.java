@@ -2,8 +2,6 @@ package material.tree.narytree;
 
 import material.Position;
 import material.tree.iterators.BFSIterator;
-import material.tree.iterators.PreorderIterator;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -118,40 +116,40 @@ public class LinkedTree<E> implements NAryTree<E> {
     /**
      * Creates an empty tree.
      */
-    public LinkedTree() {
+    public LinkedTree () {
         root = null;
         size = 0;
     }
 
     @Override
-    public int size() {
+    public int size () {
         return size;
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty () {
         return (size == 0);
     }
 
     @Override
-    public boolean isInternal(Position<E> v) {
+    public boolean isInternal (Position<E> v) {
         return !isLeaf(v);
     }
 
     @Override
-    public boolean isLeaf(Position<E> p) {
+    public boolean isLeaf (Position<E> p) {
         TreeNode<E> node = checkPosition(p);
         return (node.getChildren() == null) || (node.getChildren().isEmpty());
     }
 
     @Override
-    public boolean isRoot(Position<E> p) {
+    public boolean isRoot (Position<E> p) {
         TreeNode<E> node = checkPosition(p);
         return (node == this.root());
     }
 
     @Override
-    public Position<E> root() throws RuntimeException {
+    public Position<E> root () throws RuntimeException {
         if (root == null) {
             throw new RuntimeException("The tree is empty");
         }
@@ -159,7 +157,7 @@ public class LinkedTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Position<E> parent(Position<E> p) throws RuntimeException {
+    public Position<E> parent (Position<E> p) throws RuntimeException {
         TreeNode<E> node = checkPosition(p);
         Position<E> parentPos = node.getParent();
         if (parentPos == null) {
@@ -169,12 +167,12 @@ public class LinkedTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Iterable<? extends Position<E>> children(Position<E> p) {
+    public Iterable<? extends Position<E>> children (Position<E> p) {
         TreeNode<E> node = checkPosition(p);
         return node.getChildren();
     }
 
-    public E replace(Position<E> p, E e) {
+    public E replace (Position<E> p, E e) {
         TreeNode<E> node = checkPosition(p);
         E temp = p.getElement();
         node.setElement(e);
@@ -182,7 +180,7 @@ public class LinkedTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Position<E> addRoot(E e) throws RuntimeException {
+    public Position<E> addRoot (E e) throws RuntimeException {
         if (!isEmpty()) {
             throw new IllegalStateException("Tree already has a root");
         }
@@ -191,7 +189,7 @@ public class LinkedTree<E> implements NAryTree<E> {
         return root;
     }
 
-    public void swapElements(Position<E> p1, Position<E> p2) {
+    public void swapElements (Position<E> p1, Position<E> p2) {
         TreeNode<E> node1 = checkPosition(p1);
         TreeNode<E> node2 = checkPosition(p2);
         E temp = p2.getElement();
@@ -206,7 +204,7 @@ public class LinkedTree<E> implements NAryTree<E> {
      * @return the position casted to TreeNode
      * @throws IllegalStateException if the position is not valid
      */
-    private TreeNode<E> checkPosition(Position<E> p) throws IllegalStateException {
+    private TreeNode<E> checkPosition (Position<E> p) throws IllegalStateException {
         if (p == null || !(p instanceof TreeNode)) {
             throw new IllegalStateException("The position is invalid");
         }
@@ -218,7 +216,7 @@ public class LinkedTree<E> implements NAryTree<E> {
         return aux;
     }
 
-    public Position<E> add(E element, Position<E> p) {
+    public Position<E> add (E element, Position<E> p) {
         TreeNode<E> parent = checkPosition(p);
         TreeNode<E> newNode = new TreeNode<>(this, element, parent, new ArrayList<>());
         List<TreeNode<E>> l = parent.getChildren();
@@ -227,7 +225,7 @@ public class LinkedTree<E> implements NAryTree<E> {
         return newNode;
     }
 
-    public void remove(Position<E> p) {
+    public void remove (Position<E> p) {
         TreeNode<E> node = checkPosition(p);
         if (node.getParent() != null) {
             Iterator<Position<E>> it = new BFSIterator<>(this, p);
@@ -248,12 +246,12 @@ public class LinkedTree<E> implements NAryTree<E> {
     }
 
     @Override
-    public Iterator<Position<E>> iterator() {
+    public Iterator<Position<E>> iterator () {
             return new BFSIterator<>(this);
     }
 
     @Override
-    public void moveSubtree(Position<E> pOrig, Position<E> pDest) throws RuntimeException {
+    public void moveSubtree (Position<E> pOrig, Position<E> pDest) throws RuntimeException {
         //TODO: Practica 2 Ejercicio 1
         TreeNode<E> origin = checkPosition(pOrig);
         TreeNode<E> dest = checkPosition(pDest);

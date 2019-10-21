@@ -14,8 +14,8 @@ class QueueTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-//        queue = new ArrayQueue<>();
-        queue = new LinkedQueue<>();
+        queue = new ArrayQueue<>();
+        //queue = new LinkedQueue<>();
         for (int i = 0; i < MAX; i++) {
             queue.enqueue(i);
         }

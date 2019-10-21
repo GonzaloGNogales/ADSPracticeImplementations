@@ -2,7 +2,6 @@ package material.tree.iterators;
 
 import material.Position;
 import material.tree.Tree;
-
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -14,62 +13,79 @@ import java.util.function.Predicate;
  */
 //TODO: Practica 2 Ejercicio 3
 public class PreorderIterator<E> implements Iterator<Position<E>> {
-    private final Deque<Position<E>> nodeDeque;
+    private final Deque<Position<E>> nodeDeque = new LinkedList<>();
     private final Tree<E> tree;
+    private Predicate<Position<E>> hasPredicate;
 
-    public PreorderIterator(Tree<E> tree) {
-        nodeDeque = new LinkedList<>();
+    public PreorderIterator (Tree<E> tree) {
         this.tree = tree;
         if (!this.tree.isEmpty())
             nodeDeque.addFirst(this.tree.root());
     }
 
-    public PreorderIterator(Tree<E> tree, Position<E> start) {
-        nodeDeque = new LinkedList<>();
+    public PreorderIterator (Tree<E> tree, Position<E> start) {
         this.tree = tree;
         nodeDeque.addFirst(start);
     }
 
-    //Review PreorderIterator with predicates (learn how to use Predicates)
-    public PreorderIterator(Tree<E> tree, Position<E> start, Predicate<Position<E>> predicate) {
-        nodeDeque = new LinkedList<>();
+    //PreorderIterator with predicates
+    public PreorderIterator (Tree<E> tree, Position<E> start, Predicate<Position<E>> predicate) {
         this.tree = tree;
-        nodeDeque.addFirst(start);
-
-        if (!predicate.test(start)) {
-            while (!predicate.test(start)) {
-                start = next();
-            }
-            nodeDeque.clear();
-            nodeDeque.addFirst(start);
-        }
-    }
-
-
-    @Override
-    public boolean hasNext() {
-        return (nodeDeque.size() != 0);
+        this.hasPredicate = predicate;
+        getValidPredIteration(start, predicate);
     }
 
     @Override
-    public Position<E> next() {
+    public boolean hasNext () {
+        return (!nodeDeque.isEmpty());
+    }
+
+    @Override
+    public Position<E> next () {
         Position<E> aux = nodeDeque.removeFirst();
-        Deque<Position<E>> auxDeque = new LinkedList<>();
 
-        for (Position<E> p: nodeDeque) {
-            auxDeque.addLast(p);
-        }
+        //As I have the auxiliary method that will iterate in case that a predicate exists, in that case I only need to remove
+        //the first element on my deque, in the other hand if a predicate is missing I have to take care of the deque elements order.
+        if (this.hasPredicate == null) {
+            Deque<Position<E>> auxDeque = new LinkedList<>();
 
-        nodeDeque.clear();
+            if (!nodeDeque.isEmpty()) {
+                for (Position<E> p : nodeDeque) {
+                    auxDeque.addLast(p);
+                }
+            }
 
-        for (Position<E> node : tree.children(aux)) {
-            nodeDeque.addLast(node);
-        }
-        for (Position<E> n: auxDeque) {
-            nodeDeque.addLast(n);
+            nodeDeque.clear();
+
+            for (Position<E> node : tree.children(aux)) {
+                nodeDeque.addLast(node);
+            }
+
+            for (Position<E> n : auxDeque) {
+                nodeDeque.addLast(n);
+            }
         }
 
         return aux;
     }
 
+    //No need to implement.
+    @Override
+    public void remove () {
+        throw new UnsupportedOperationException("Not implemented in Java.");
+    }
+
+    private void getValidPredIteration (Position<E> p, Predicate<Position<E>> pred) {
+        if (pred.test(p))
+            nodeDeque.addLast(p);
+
+        //The tree that is being iterated has an inorder iterator so this enhanced for, will
+        //iterate in an inorder way and will save the elements in the correct order in which it'll be returned afterwards.
+        for (Position<E> node: this.tree.children(p)) {
+            getValidPredIteration(node, pred);
+        }
+    }
+
 }
+
+
