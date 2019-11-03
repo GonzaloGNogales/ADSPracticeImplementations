@@ -272,4 +272,16 @@ public class LCRSTree<E> implements NAryTree<E> {
 
         return aux;
     }
+
+    public int posLevel (Position<E> p) {
+        int level = 0;
+        LCRSNode<E> node = checkPosition(p);
+
+        while (node.getParent() != null) {
+            node = node.getParent();
+            level++;
+        }
+
+        return level+1;
+    }
 }

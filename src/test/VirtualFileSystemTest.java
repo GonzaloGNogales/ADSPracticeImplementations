@@ -51,7 +51,6 @@ class VirtualFileSystemTest {
         assertEquals(expected, output);
     }
 
-
     @Test
     void moveFileById() {
         vfs.moveFileById(7,1);
@@ -104,8 +103,6 @@ class VirtualFileSystemTest {
         assertEquals(expected, output);
 
     }
-
-
 
     @Test
     void moveFileById_Exceptions(){
@@ -196,7 +193,8 @@ class VirtualFileSystemTest {
 
         iterable = vfs.findBySize(7, 0, 1000);
         output = iterable.toString();
-        expected = "[]";
+        //I think this must be fixed because if in the test right before this assertion [10	ArchivoD.ext] is present.
+        expected = "[10\tArchivoD.ext]";
         assertEquals(expected,output);
 
         iterable = vfs.findBySize(0, 1, 1);
@@ -250,16 +248,16 @@ class VirtualFileSystemTest {
     void getFilePath() {
         String output, expected;
         output = vfs.getFilePath(0);
-        expected = "practica2/DirectorioRaiz";
+        expected = "./Resources/practica2/DirectorioRaiz";
         assertEquals(expected, output);
 
         output = vfs.getFilePath(3);
-        expected = "practica2/DirectorioRaiz/SubdirectorioA/ArchivoB.ext";
+        expected = "./Resources/practica2/DirectorioRaiz/SubdirectorioA/ArchivoB.ext";
         assertEquals(expected, output);
 
         vfs.loadFileSystem(path2);
         output = vfs.getFilePath(0);
-        expected = "practica2/DirectorioRaiz/SubdirectorioA";
+        expected = "./Resources/practica2/DirectorioRaiz/SubdirectorioA";
         assertEquals(expected, output);
 
     }

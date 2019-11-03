@@ -2,6 +2,8 @@ package material.tree.narytree;
 
 import material.Position;
 import material.tree.iterators.BFSIterator;
+import material.tree.iterators.PreorderIterator;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -206,12 +208,12 @@ public class LinkedTree<E> implements NAryTree<E> {
      */
     private TreeNode<E> checkPosition (Position<E> p) throws IllegalStateException {
         if (p == null || !(p instanceof TreeNode)) {
-            throw new IllegalStateException("The position is invalid");
+            throw new IllegalStateException("Invalid ID.");
         }
         TreeNode<E> aux = (TreeNode<E>) p;
 
         if (aux.getMyTree() != this) {
-            throw new IllegalStateException("The node is not from this tree");
+            throw new IllegalStateException("Invalid ID.");
         }
         return aux;
     }
@@ -225,6 +227,7 @@ public class LinkedTree<E> implements NAryTree<E> {
         return newNode;
     }
 
+    @Override
     public void remove (Position<E> p) {
         TreeNode<E> node = checkPosition(p);
         if (node.getParent() != null) {
@@ -247,7 +250,7 @@ public class LinkedTree<E> implements NAryTree<E> {
 
     @Override
     public Iterator<Position<E>> iterator () {
-            return new BFSIterator<>(this);
+            return new PreorderIterator<>(this);
     }
 
     @Override
@@ -271,7 +274,7 @@ public class LinkedTree<E> implements NAryTree<E> {
         else if (origin == this.root)
             throw new RuntimeException("Root node can't be moved");
         else if (isSubTree)
-            throw new RuntimeException("Target position can't be a sub tree of origin");
+            throw new RuntimeException("A file can't be a subdirectory of itself.");
 
 
         TreeNode<E> originParent = origin.getParent();
@@ -281,5 +284,16 @@ public class LinkedTree<E> implements NAryTree<E> {
 
     }
 
+    public int posLevel (Position<E> p) {
+        int level = 0;
+        TreeNode<E> node = checkPosition(p);
+
+        while (node.getParent() != null) {
+            node = node.getParent();
+            level++;
+        }
+
+        return level+1;
+    }
 }
 
